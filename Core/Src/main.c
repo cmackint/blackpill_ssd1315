@@ -50,6 +50,7 @@ UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 const char *welcome_message = "hi! ʕ •ᴥ•ʔ. this is a LSM303 accelerometer test program!\r\n"; 
 cam_logger logger = {};
+cam_ssd1315 ssd1315 = {};
 
 /* USER CODE END PV */
 
@@ -98,6 +99,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+
+  cam_ssd1315_init(&ssd1315, &logger, &hi2c1);
+  cam_ssd1315_clear(&ssd1315);
+  cam_ssd1315_refresh(&ssd1315);
   
   HAL_UART_Transmit(&huart1, (uint8_t*) welcome_message, strlen(welcome_message), 1000);
   HAL_Delay(1000);
@@ -109,9 +114,9 @@ int main(void)
   while (1)
   {
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-    HAL_Delay(50);
+    HAL_Delay(500);
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-    HAL_Delay(50);
+    HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
