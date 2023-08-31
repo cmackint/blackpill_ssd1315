@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "cam_uart_logger.h"
 #include "cam_ssd1315.h"
+#include "image_data.h"
 #include <string.h>
 
 /* USER CODE END Includes */
@@ -175,22 +176,29 @@ int main(void)
 
   cam_ssd1315_init(&ssd1315, &logger, &hi2c1);
   cam_ssd1315_clear(&ssd1315);
+  cam_ssd1315_refresh(&ssd1315);
+
+  HAL_UART_Transmit(&huart1, (uint8_t*) welcome_message, strlen(welcome_message), 1000);
+
+  // Display lain
   cam_ssd1315_set_horiz_data(&ssd1315, image_data);
   cam_ssd1315_refresh(&ssd1315);
-  
-  HAL_UART_Transmit(&huart1, (uint8_t*) welcome_message, strlen(welcome_message), 1000);
-  HAL_Delay(1000);
+  HAL_Delay(5000);
+  cam_ssd1315_clear(&ssd1315);
+  cam_ssd1315_refresh(&ssd1315);
 
+  int frame_index = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-    HAL_Delay(500);
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-    HAL_Delay(500);
+    cam_ssd1315_set_horiz_data(&ssd1315, frames[frame_index]);
+    cam_ssd1315_refresh(&ssd1315);
+    HAL_Delay(20);
+
+    frame_index = (frame_index + 1) % num_frames;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
