@@ -45,3 +45,7 @@ Reset STM32
 ```sh
 openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg -c "init" -c "halt" -c "stm32f4x unlock 0" -c "reset halt" -c "exit"
 ```
+
+# Example
+
+![](img/example.jpg)
