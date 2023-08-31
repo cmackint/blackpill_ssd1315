@@ -48,4 +48,4 @@ openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg -c "init" -c "halt" -c
 
 # Example
 
-![](img/example.jpg)
+![](img/video.gif)
